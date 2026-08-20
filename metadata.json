@@ -1,0 +1,6 @@
+{
+  "name": "BK Vol. 2",
+  "description": "Sistem Informasi Bimbingan Konseling Sekolah Terpadu: Input Master Data, Konseling Pribadi & Kelompok, Dashboard Analisis, Arsip Laporan, dan Cetak Surat Panggilan & Surat Tugas PDF",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
