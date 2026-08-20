@@ -52,12 +52,12 @@ export default function App() {
 
       {/* 2. MAIN APPLICATION CONTAINER */}
       <div
-        className={`min-h-screen bg-slate-100 text-slate-900 font-sans flex flex-col lg:flex-row selection:bg-indigo-500 selection:text-white transition-all ${
-          isAppMaximized ? 'w-full' : ''
+        className={`min-h-screen bg-slate-100 text-slate-900 font-sans flex flex-col lg:flex-row selection:bg-indigo-500 selection:text-white transition-all duration-200 ${
+          isAppMaximized ? 'w-full max-w-none' : ''
         }`}
       >
         {/* Navigation Sidebar / Header */}
-        <Header activeTab={activeTab} setActiveTab={setActiveTab} />
+        {!isAppMinimized && <Header activeTab={activeTab} setActiveTab={setActiveTab} />}
 
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
@@ -72,34 +72,47 @@ export default function App() {
             setIsAppMaximized={setIsAppMaximized}
           />
 
-          {/* If App is Minimized, show placeholder card + floating dock */}
+          {/* If App is Minimized, show a sleek Desktop Wallpaper state with quick restore */}
           {isAppMinimized ? (
-            <div className="flex-1 flex items-center justify-center p-8 text-center animate-in fade-in duration-200">
-              <div className="bg-white rounded-3xl p-8 max-w-md w-full border border-slate-200 shadow-xl space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center mx-auto text-indigo-600 shadow-xs">
-                  <LogoKonselor className="w-8 h-8" />
+            <div className="flex-1 flex flex-col items-center justify-center p-6 sm:p-12 text-center bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 text-white animate-in fade-in zoom-in-95 duration-200 min-h-[calc(100vh-65px)]">
+              <div className="bg-slate-800/80 backdrop-blur-md rounded-3xl p-6 sm:p-8 max-w-md w-full border border-slate-700 shadow-2xl space-y-4">
+                <div className="w-14 h-14 rounded-2xl bg-indigo-600/30 border border-indigo-500/50 flex items-center justify-center mx-auto text-indigo-400 shadow-lg">
+                  <LogoKonselor className="w-10 h-10" />
                 </div>
                 <div>
-                  <h3 className="text-base font-extrabold text-slate-900">
-                    Jendela Aplikasi Sedang Diminimize
+                  <h3 className="text-base sm:text-lg font-extrabold text-white">
+                    Aplikasi Sedang Diminimize
                   </h3>
-                  <p className="text-xs text-slate-500 mt-1">
-                    Anda sedang berada pada halaman{' '}
-                    <strong className="text-indigo-600">{getTabLabel(activeTab)}</strong>.
+                  <p className="text-xs text-slate-300 mt-1">
+                    Seluruh aplikasi BK Vol. 2 terminimize. Anda sedang berada di halaman{' '}
+                    <strong className="text-indigo-400">{getTabLabel(activeTab)}</strong>.
                   </p>
                 </div>
-                <button
-                  onClick={() => setIsAppMinimized(false)}
-                  className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-md shadow-indigo-600/20 transition cursor-pointer"
-                >
-                  <Maximize2 className="w-4 h-4" />
-                  <span>Pulihkan / Buka Tampilan Penuh</span>
-                </button>
+                <div className="pt-2 flex flex-col sm:flex-row gap-2">
+                  <button
+                    onClick={() => setIsAppMinimized(false)}
+                    className="flex-1 py-2.5 px-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 transition cursor-pointer"
+                  >
+                    <Maximize2 className="w-4 h-4" />
+                    <span>Buka / Pulihkan Aplikasi</span>
+                  </button>
+                  <button
+                    onClick={() => setIsAppStandby(true)}
+                    className="py-2.5 px-3 bg-slate-700/80 hover:bg-rose-900/60 text-slate-300 hover:text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition cursor-pointer border border-slate-600"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                    <span>Tutup</span>
+                  </button>
+                </div>
               </div>
             </div>
           ) : (
             /* Standard Main Content */
-            <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+            <main
+              className={`flex-1 w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 ${
+                isAppMaximized ? 'max-w-none' : 'max-w-7xl'
+              }`}
+            >
               {activeTab === 'dashboard' && <Dashboard setActiveTab={setActiveTab} />}
               {activeTab === 'master' && <MasterData />}
               {activeTab === 'input-konseling' && <FormKonseling setActiveTab={setActiveTab} />}
@@ -111,24 +124,30 @@ export default function App() {
           )}
 
           {/* Footer */}
-          <footer className="bg-slate-900 border-t border-slate-800 text-slate-400 py-6 px-4 sm:px-6 lg:px-8 text-xs mt-auto">
-            <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-              <div className="flex items-center space-x-2">
-                <LogoKonselor className="w-5 h-5" />
-                <span className="font-bold italic text-slate-200">BK Vol. 2</span>
-                <span className="italic">— Sistem Bimbingan Konseling Sekolah Terpadu</span>
-              </div>
+          {!isAppMinimized && (
+            <footer className="bg-slate-900 border-t border-slate-800 text-slate-400 py-6 px-4 sm:px-6 lg:px-8 text-xs mt-auto">
+              <div
+                className={`w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 ${
+                  isAppMaximized ? 'max-w-none' : 'max-w-7xl'
+                }`}
+              >
+                <div className="flex items-center space-x-2">
+                  <LogoKonselor className="w-5 h-5" />
+                  <span className="font-bold italic text-slate-200">BK Vol. 2</span>
+                  <span className="italic">— Sistem Bimbingan Konseling Sekolah Terpadu</span>
+                </div>
 
-              <div className="flex items-center space-x-4 text-[11px] text-slate-500">
-                <span className="flex items-center space-x-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-indigo-400" />
-                  <span>Terintegrasi Local Database</span>
-                </span>
-                <span>•</span>
-                <span>Cetak PDF Resmi Kop Sekolah</span>
+                <div className="flex items-center space-x-4 text-[11px] text-slate-500">
+                  <span className="flex items-center space-x-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-indigo-400" />
+                    <span>Terintegrasi Local Database</span>
+                  </span>
+                  <span>•</span>
+                  <span>Cetak PDF Resmi Kop Sekolah</span>
+                </div>
               </div>
-            </div>
-          </footer>
+            </footer>
+          )}
         </div>
       </div>
 

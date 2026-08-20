@@ -77,8 +77,8 @@ export const AppStandbyScreen: React.FC<AppStandbyScreenProps> = ({
         <div className="flex items-center gap-1.5 bg-slate-900/80 border border-slate-800 p-1 rounded-xl">
           <button
             onClick={onRestore}
-            className="p-1.5 text-slate-400 hover:text-emerald-400 hover:bg-slate-800 rounded-lg transition"
-            title="Buka / Restore Aplikasi"
+            className="p-1.5 text-slate-400 hover:text-emerald-400 hover:bg-slate-800 rounded-lg transition cursor-pointer"
+            title="Buka / Restore Aplikasi BK Vol. 2"
           >
             <Maximize2 className="w-3.5 h-3.5" />
           </button>
